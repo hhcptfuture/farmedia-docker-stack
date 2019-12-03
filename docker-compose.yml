@@ -40,4 +40,4 @@ services:
         restart: unless-stopped
         
 networks:
-    admanager:
+    piwigo:
