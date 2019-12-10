@@ -23,7 +23,7 @@ services:
         container_name: mariadb
         environment:
             - PUID=1000
-            - PGID=1000
+            - PGID=100
             - TZ=Europe/Berlin
             # To change the root password: go in the container and use: mysqladmin -u root password <PASSWORD>
             # - MYSQL_ROOT_PASSWORD=ROOT_ACCESS_PASSWORD
