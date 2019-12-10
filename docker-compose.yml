@@ -7,7 +7,7 @@ services:
         container_name: piwigo
         environment:
             - PUID=1000
-            - PGID=1000
+            - PGID=100
             - TZ=Europe/Berlin
         volumes:
             - /home/pi/hdd-extern25/docker/piwigo/config:/config
