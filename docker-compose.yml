@@ -34,7 +34,7 @@ services:
         volumes:
             - /home/pi/hdd-extern25/docker/mariadb/config:/config
         ports:
-            - 10010:3306
+            - 3306:3306
         networks:
             - piwigo     
         restart: unless-stopped
