@@ -2,9 +2,9 @@ version: "2"
 
 services:
 
-    piwigo:
+    piwigo_app:
         image: linuxserver/piwigo
-        container_name: piwigo
+        container_name: piwigo_app
         environment:
             - PUID=1000
             - PGID=100
@@ -14,13 +14,14 @@ services:
             - /home/pi/hdd-extern25/fotos:/config/www/gallery/galleries
         ports:
             - 10000:443
+            - 10080:80
         networks:
             - piwigo    
         restart: unless-stopped
         
-    mariadb:
+    piwigo_mariadb:
         image: linuxserver/mariadb
-        container_name: mariadb
+        container_name: piwigo_mariadb
         environment:
             - PUID=1000
             - PGID=100
@@ -32,7 +33,7 @@ services:
             # - MYSQL_PASSWORD=DATABASE_PASSWORD #optional
             # - REMOTE_SQL=http://URL1/your.sql,https://URL2/your.sql #optional
         volumes:
-            - /home/pi/hdd-extern25/docker/mariadb/config:/config
+            - /home/pi/hdd-extern25/docker/mariadb:/config
         ports:
             - 3306:3306
         networks:
