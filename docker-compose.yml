@@ -11,7 +11,8 @@ services:
             - TZ=Europe/Berlin
         volumes:
             - /home/pi/hdd-extern25/docker/piwigo/config:/config
-            - /home/pi/hdd-extern25/fotos:/config/www/gallery/galleries
+            - /home/pi/hdd-extern25/piwigo/galleries:/config/www/gallery/galleries
+            - /home/pi/hdd-extern25/piwigo/upload:/config/www/gallery/upload
         ports:
             - 10000:443
             - 10080:80
@@ -33,7 +34,7 @@ services:
             # - MYSQL_PASSWORD=DATABASE_PASSWORD #optional
             # - REMOTE_SQL=http://URL1/your.sql,https://URL2/your.sql #optional
         volumes:
-            - /home/pi/hdd-extern25/docker/mariadb:/config
+            - /home/pi/hdd-extern25/docker/piwigo/mariadb:/config
         ports:
             - 3306:3306
         networks:
