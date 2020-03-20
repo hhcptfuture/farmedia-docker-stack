@@ -1,2 +1,2 @@
-# piwigo-docker
-A docker setup for Piwigo.
+# farmedia-docker-stack
+A docker setup for farmedia.
