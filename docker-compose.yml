@@ -2,27 +2,26 @@ version: "2"
 
 services:
 
-    piwigo_app:
+    piwigo:
         image: linuxserver/piwigo
-        container_name: piwigo_app
+        container_name: piwigo
         environment:
             - PUID=1000
             - PGID=100
             - TZ=Europe/Berlin
         volumes:
-            - /home/pi/hdd-extern25/docker/piwigo/config:/config
+            - /home/pi/hdd-extern25/docker/piwigo:/config
             - /home/pi/hdd-extern25/piwigo/galleries:/config/www/gallery/galleries
             - /home/pi/hdd-extern25/piwigo/upload:/config/www/gallery/upload
         ports:
-            - 10000:443
             - 10080:80
         networks:
-            - piwigo    
+            - farmedia    
         restart: unless-stopped
         
-    piwigo_mariadb:
+    mariadb:
         image: linuxserver/mariadb
-        container_name: piwigo_mariadb
+        container_name: mariadb
         environment:
             - PUID=1000
             - PGID=100
@@ -34,12 +33,32 @@ services:
             # - MYSQL_PASSWORD=DATABASE_PASSWORD #optional
             # - REMOTE_SQL=http://URL1/your.sql,https://URL2/your.sql #optional
         volumes:
-            - /home/pi/hdd-extern25/docker/piwigo/mariadb:/config
-        ports:
-            - 3306:3306
+            - /home/pi/hdd-extern25/docker/mariadb:/config
         networks:
-            - piwigo     
+            - farmedia     
+        restart: unless-stopped
+        
+    letsencrypt:
+        image: linuxserver/letsencrypt
+        container_name: letsencrypt
+        cap_add:
+            - NET_ADMIN
+        environment:
+            - PUID=1000
+            - PGID=100
+            - TZ=Europe/Berlin
+            - VALIDATION=duckdns
+            - DUCKDNSTOKEN=04212f9f-0aba-4166-91e7-123185ed0d69
+            - URL=farmedia.duckdns.org
+            - SUBDOMAINS=wildcard
+        volumes:
+            - /home/pi/hdd-extern25/docker/letsencrypt:/config
+        ports:
+            - 443:443
+            - 80:80
+        networks:
+            - farmedia     
         restart: unless-stopped
         
 networks:
-    piwigo:
+    farmedia:
