@@ -48,7 +48,7 @@ services:
             - PGID=100
             - TZ=Europe/Berlin
             - VALIDATION=duckdns
-            - DUCKDNSTOKEN=04212f9f-0aba-4166-91e7-123185ed0d69
+            - DUCKDNSTOKEN=xxx
             - URL=farmedia.duckdns.org
             - SUBDOMAINS=wildcard
         volumes:
@@ -59,6 +59,70 @@ services:
         networks:
             - farmedia     
         restart: unless-stopped
-        
+    
+    phpmyadmin:
+        image: ebspace/armhf-phpmyadmin:latest
+        container_name: phpmyadmin
+        depends_on:
+            - mariadb
+        ports:
+            - 10081:80
+        environment:
+            PMA_HOST: mariadb
+            PMA_USER: root
+            PMA_PASSWORD: "secret"
+        networks:
+            - farmedia
+        restart: unless-stopped
+      
+    duckdns:
+        image: linuxserver/duckdns
+        container_name: duckdns
+        environment:
+            - PUID=1000
+            - PGID=100
+            - TZ=Europe/Berlin
+            - SUBDOMAINS=xxx
+            - TOKEN=xxx
+            - LOG_FILE=true #optional
+        volumes:
+            - /home/pi/hdd-extern25/docker/duckdns:/config
+        networks:
+            - farmedia
+        restart: unless-stopped      
+
+    duplicati:
+        image: linuxserver/duplicati
+        container_name: duplicati
+        environment:
+            - PUID=1000
+            - PGID=100
+            - TZ=Europe/Berlin
+            - CLI_ARGS= #optional
+        volumes:
+            - /home/pi/hdd-extern25/docker/duplicati:/config
+            - /home/pi/hdd-intern:/backups
+            - /home/pi/hdd-extern25:/source
+        ports:
+            - 8200:8200
+        networks:
+            - farmedia  
+        restart: unless-stopped
+
+    heimdall:
+        image: linuxserver/heimdall
+        container_name: heimdall
+        environment:
+            - PUID=1000
+            - PGID=100
+            - TZ=Europe/Berlin
+        volumes:
+            - /home/pi/hdd-extern25/docker/heimdall:/config
+        ports:
+            - 8888:80
+        networks:
+            - farmedia  
+        restart: unless-stopped
+
 networks:
     farmedia:
